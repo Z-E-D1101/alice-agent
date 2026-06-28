@@ -39,36 +39,37 @@
   --color-alice: var(--alice);
   --color-tool: var(--tool);
   --color-thinking: var(--thinking);
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Inter", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {
   --radius: 0.75rem;
-  /* ChatGPT-inspired professional dark theme */
-  --background: #212121;
+  /* ChatGPT-inspired dark theme — deeper black bg */
+  --background: #1A1A1A;
   --foreground: #ECECEC;
-  --card: #2F2F2F;
+  --card: #212121;
   --card-foreground: #ECECEC;
-  --popover: #2F2F2F;
+  --popover: #212121;
   --popover-foreground: #ECECEC;
   --primary: #10a37f;
   --primary-foreground: #FFFFFF;
-  --secondary: #2F2F2F;
+  --secondary: #212121;
   --secondary-foreground: #ECECEC;
-  --muted: #2F2F2F;
+  --muted: #212121;
   --muted-foreground: #8E8EA0;
-  --accent: #343541;
+  --accent: #2F2F2F;
   --accent-foreground: #ECECEC;
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
-  --border: #424242;
-  --input: #3E3E3E;
+  --border: #333333;
+  --input: #2F2F2F;
   --ring: #10a37f;
-  --sidebar: #171717;
+  --sidebar: #111111;
   --sidebar-foreground: #ECECEC;
   --sidebar-primary: #10a37f;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #2F2F2F;
+  --sidebar-accent: #1A1A1A;
   --sidebar-accent-foreground: #ECECEC;
   --sidebar-border: #2F2F2F;
   --sidebar-ring: #10a37f;
@@ -77,21 +78,75 @@
   --thinking: #BB9AF7;
 }
 
-.dark {
-  --background: oklch(0.18 0.025 320);
-  --foreground: oklch(0.96 0.012 80);
-}
-
 @layer base {
   * { border-color: var(--color-border); }
   html, body, #root { height: 100%; }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-family: "Inter", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
+/* ===== Code blocks (ChatGPT-style) ===== */
+.alice-code-block {
+  position: relative;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: #111111;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+.alice-code-block pre {
+  overflow-x: auto;
+  padding: 14px 16px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  background: transparent !important;
+}
+.alice-code-block .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: #8E8EA0;
+  background: #2F2F2F;
+  border: 1px solid #424242;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.alice-code-block:hover .copy-btn {
+  opacity: 1;
+}
+.alice-code-block .lang-label {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  font-size: 11px;
+  color: #8E8EA0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Inline code ===== */
+.alice-inline-code {
+  background: #2F2F2F;
+  color: #58A6FF;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ===== Animations ===== */
 @keyframes alice-pulse {
   0%, 100% { opacity: 0.7; }
   50% { opacity: 1; }

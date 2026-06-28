@@ -232,7 +232,7 @@ function AlicePage() {
           {/* Chat scroll area */}
       <div className="flex flex-1 flex-col min-w-0">
             <div ref={scrollRef} className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-3xl px-4 py-6 space-y-5">
+              <div className="mx-auto w-full max-w-[92%] md:max-w-[720px] lg:max-w-[800px] px-0 md:px-2 py-4 space-y-6">
                 {!active || active.messages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center text-center px-4 space-y-3" style={{ minHeight: "calc(100dvh - 180px)" }}>
                     <div className="text-5xl">🐇</div>
