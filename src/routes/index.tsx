@@ -199,8 +199,9 @@ function AlicePage() {
         mobileOpen={sidebarOpen}
         onMobileClose={() => setSidebarOpen(false)}
       />
-      <main className="flex flex-1 flex-col min-w-0 pb-[56px] md:pb-0">
-        <header className="flex items-center gap-2 border-b border-border bg-card/30 px-3 py-2 shrink-0">
+      <main className="flex flex-1 flex-col min-w-0">
+        {/* Fixed header */}
+        <header className="sticky top-0 z-10 flex items-center gap-2 border-b border-border bg-card/95 backdrop-blur-sm px-3 py-2 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="md:hidden text-muted-foreground hover:text-foreground p-1 -ml-1" aria-label="Open sidebar">
             <PanelLeft className="h-5 w-5" />
           </button>
@@ -226,15 +227,16 @@ function AlicePage() {
           />
         </header>
 
-        <div className="flex flex-1 min-h-0">
-          <section className="flex-1 flex flex-col min-w-0">
-            <div ref={scrollRef} className="flex-1 overflow-y-auto">
-              <div className="mx-auto max-w-3xl px-4 py-6 space-y-5">
+        {/* Scrollable chat area */}
+        <section className="flex flex-1 min-h-0">
+          <div className="flex flex-1 flex-col min-w-0 max-w-full">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
+              <div className="mx-auto max-w-3xl px-3 md:px-4 py-4 md:py-6 space-y-4 md:space-y-5 min-h-full">
                 {!active || active.messages.length === 0 ? (
-                  <div className="text-center pt-20 space-y-3">
-                    <div className="text-5xl">🐇</div>
-                    <h1 className="text-2xl font-semibold">Hello, I'm Alice.</h1>
-                    <p className="text-muted-foreground max-w-md mx-auto text-sm">
+                  <div className="flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] text-center px-4 space-y-3">
+                    <div className="text-4xl md:text-5xl">🐇</div>
+                    <h1 className="text-xl md:text-2xl font-semibold">Hello, I'm Alice.</h1>
+                    <p className="text-muted-foreground max-w-md text-xs md:text-sm">
                       I learn about you over time, remember our past conversations, build my own skills, and use tools to actually get things done. Ask me anything.
                     </p>
                     {!ready && (
@@ -251,52 +253,27 @@ function AlicePage() {
                 {showLiveSpinner && <ThinkingSpinner />}
               </div>
             </div>
-            <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
-          </section>
+          </div>
 
           {/* Desktop right panel */}
           {(panel === "memory" || panel === "skills" || panel === "tasks") && (
             <aside className="hidden md:block w-72 md:w-80 shrink-0 border-l border-border bg-card/20 overflow-y-auto">
               {panel === "memory" && (
-                <MemoryPanel
-                  entries={memory}
-                  onDelete={(id) => { const n = memory.filter(m => m.id !== id); setMemory(n); saveMemory(n); }}
-                  onClear={() => { setMemory([]); saveMemory([]); }}
-                />
+                <MemoryPanel entries={memory} onDelete={(id) => { const n = memory.filter(m => m.id !== id); setMemory(n); saveMemory(n); }} onClear={() => { setMemory([]); saveMemory([]); }} />
               )}
               {panel === "skills" && (
-                <SkillsPanel
-                  skills={skills}
-                  onDelete={(id) => { const n = skills.filter(s => s.id !== id); setSkills(n); saveSkills(n); }}
-                  onExport={(s) => {
-                    const blob = new Blob([JSON.stringify(s, null, 2)], { type: "application/json" });
-                    const a = document.createElement("a");
-                    a.href = URL.createObjectURL(blob);
-                    a.download = `alice-skill-${s.name.replace(/\s+/g, "-")}.json`;
-                    a.click();
-                  }}
-                  onImport={(json) => {
-                    const parsed = JSON.parse(json) as Skill;
-                    const sk: Skill = { ...parsed, id: uid(), createdAt: Date.now() };
-                    const n = [...skills, sk]; setSkills(n); saveSkills(n);
-                  }}
-                />
+                <SkillsPanel skills={skills} onDelete={(id) => { const n = skills.filter(s => s.id !== id); setSkills(n); saveSkills(n); }} onExport={(s) => { const blob = new Blob([JSON.stringify(s, null, 2)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `alice-skill-${s.name.replace(/\s+/g, "-")}.json`; a.click(); }} onImport={(json) => { const parsed = JSON.parse(json) as Skill; const sk: Skill = { ...parsed, id: uid(), createdAt: Date.now() }; const n = [...skills, sk]; setSkills(n); saveSkills(n); }} />
               )}
               {panel === "tasks" && (
-                <TasksPanel
-                  tasks={tasks}
-                  onAdd={(name, prompt, schedule) => {
-                    const ps = parseSchedule(schedule);
-                    const t: ScheduledTask = { id: uid(), name, prompt, schedule, intervalMs: ps.intervalMs, dailyAt: ps.dailyAt, nextRun: ps.nextRun, enabled: true };
-                    const n = [...tasks, t]; setTasks(n); saveTasks(n); toast.success("scheduled");
-                  }}
-                  onDelete={(id) => { const n = tasks.filter(t => t.id !== id); setTasks(n); saveTasks(n); }}
-                  onToggle={(id) => { const n = tasks.map(t => t.id === id ? { ...t, enabled: !t.enabled } : t); setTasks(n); saveTasks(n); }}
-                  onRunNow={(id) => { const n = tasks.map(t => t.id === id ? { ...t, nextRun: Date.now() } : t); setTasks(n); saveTasks(n); }}
-                />
+                <TasksPanel tasks={tasks} onAdd={(name, prompt, schedule) => { const ps = parseSchedule(schedule); const t: ScheduledTask = { id: uid(), name, prompt, schedule, intervalMs: ps.intervalMs, dailyAt: ps.dailyAt, nextRun: ps.nextRun, enabled: true }; const n = [...tasks, t]; setTasks(n); saveTasks(n); toast.success("scheduled"); }} onDelete={(id) => { const n = tasks.filter(t => t.id !== id); setTasks(n); saveTasks(n); }} onToggle={(id) => { const n = tasks.map(t => t.id === id ? { ...t, enabled: !t.enabled } : t); setTasks(n); saveTasks(n); }} onRunNow={(id) => { const n = tasks.map(t => t.id === id ? { ...t, nextRun: Date.now() } : t); setTasks(n); saveTasks(n); }} />
               )}
             </aside>
           )}
+        </section>
+
+        {/* Fixed composer */}
+        <div className="shrink-0">
+          <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
         </div>
 
         {/* Mobile bottom sheet for memory/skills/tasks */}
@@ -327,7 +304,7 @@ function AlicePage() {
       </main>
 
       {/* Mobile bottom navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-border bg-card/95 backdrop-blur-md safe-area-bottom pb-safe">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-border bg-card/95 backdrop-blur-md pb-safe">
         <div className="flex items-center justify-around py-1.5">
           <MobileNavBtn icon={<MessageSquare className="h-5 w-5" />} label="Chats" active={panel === "chats" && !mobilePanelOpen} onClick={() => { setPanel("chats"); setMobilePanelOpen(null); }} />
           <MobileNavBtn icon={<Brain className="h-5 w-5" />} label="Memory" active={mobilePanelOpen === "memory"} onClick={() => { setPanel("memory"); setMobilePanelOpen("memory"); }} />
