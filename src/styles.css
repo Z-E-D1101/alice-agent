@@ -111,6 +111,23 @@
   scrollbar-width: thin;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  -ms-overflow-style: none;
+}
+.alice-code-block pre::-webkit-scrollbar {
+  height: 6px;
+}
+.alice-code-block pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+.alice-code-block pre::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 3px;
+}
+.alice-code-block pre code {
+  white-space: pre !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
 }
 .alice-code-block .copy-btn {
   position: absolute;

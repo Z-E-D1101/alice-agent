@@ -1,10 +1,19 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import { useState, useCallback } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import type { Message } from "@/lib/alice/types";
 import { ThinkingPanel } from "./ThinkingPanel";
 import { ToolCallLine } from "./ToolCallLine";
+
+function extractText(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(extractText).join("");
+  if (node && typeof node === "object" && "props" in node) {
+    return extractText((node as any).props.children);
+  }
+  return "";
+}
 
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
@@ -71,7 +80,7 @@ export function MessageView({ msg, live }: { msg: Message; live?: boolean }) {
             components={{
               code({ className, children, ...props }: any) {
                 const match = /language-(\w+)/.exec(className || "");
-                const codeStr = (Array.isArray(children) ? children.join("") : String(children)).replace(/\n$/, "");
+                const codeStr = extractText(children);
                 if (match) {
                   return (
                     <div className="alice-code-block">
