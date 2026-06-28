@@ -199,9 +199,9 @@ function AlicePage() {
         mobileOpen={sidebarOpen}
         onMobileClose={() => setSidebarOpen(false)}
       />
-      <main className="flex flex-1 flex-col min-w-0">
+      <main className="flex flex-1 flex-col min-w-0 max-h-full">
         {/* Fixed header */}
-        <header className="sticky top-0 z-10 flex items-center gap-2 border-b border-border bg-card/95 backdrop-blur-sm px-3 py-2 shrink-0">
+        <header className="flex items-center gap-2 border-b border-border bg-card/95 backdrop-blur-sm px-3 py-2 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="md:hidden text-muted-foreground hover:text-foreground p-1 -ml-1" aria-label="Open sidebar">
             <PanelLeft className="h-5 w-5" />
           </button>
@@ -227,13 +227,14 @@ function AlicePage() {
           />
         </header>
 
-        {/* Scrollable chat area */}
-        <section className="flex flex-1 min-h-0">
+        {/* Body: chat + optional right panel */}
+        <div className="flex flex-1 min-h-0">
+          {/* Chat area */}
           <div className="flex flex-1 flex-col min-w-0 max-w-full">
             <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
-              <div className="mx-auto max-w-3xl px-3 md:px-4 py-4 md:py-6 space-y-4 md:space-y-5 min-h-full">
+              <div className="mx-auto max-w-3xl px-3 md:px-4 py-4 md:py-6 space-y-4 md:space-y-5">
                 {!active || active.messages.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center min-h-[calc(100vh-16rem)] text-center px-4 space-y-3">
+                  <div className="flex flex-col items-center justify-center min-h-[calc(100dvh-12rem)] text-center px-4 space-y-3">
                     <div className="text-4xl md:text-5xl">🐇</div>
                     <h1 className="text-xl md:text-2xl font-semibold">Hello, I'm Alice.</h1>
                     <p className="text-muted-foreground max-w-md text-xs md:text-sm">
@@ -269,12 +270,10 @@ function AlicePage() {
               )}
             </aside>
           )}
-        </section>
+        </div>
 
         {/* Fixed composer */}
-        <div className="shrink-0">
-          <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
-        </div>
+        <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
 
         {/* Mobile bottom sheet for memory/skills/tasks */}
         {mobilePanelOpen && (
