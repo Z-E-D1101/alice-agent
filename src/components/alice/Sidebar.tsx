@@ -67,7 +67,7 @@ export function Sidebar({
                 <span className="truncate flex-1">{t.title}</span>
                 <button
                   onClick={(e) => { e.stopPropagation(); onDelete(t.id); }}
-                  className="opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive"
+                  className="text-muted-foreground hover:text-destructive shrink-0"
                   aria-label="Delete"
                 >
                   <Trash2 className="h-3.5 w-3.5" />

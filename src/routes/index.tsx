@@ -176,7 +176,7 @@ function AlicePage() {
   const onAbort = () => { abortRef.current?.abort(); };
 
   if (!hydrated || !settings || !profile) {
-    return <div className="grid h-screen place-items-center text-muted-foreground">Loading Alice…</div>;
+    return <div className="grid h-dvh place-items-center text-muted-foreground text-sm">Loading Alice…</div>;
   }
 
   const provider = providers.find(p => p.id === settings.activeProviderId);
@@ -187,7 +187,7 @@ function AlicePage() {
   })();
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="flex h-dvh w-screen">
       <Sidebar
         threads={threads}
         activeId={activeId}
@@ -199,9 +199,10 @@ function AlicePage() {
         mobileOpen={sidebarOpen}
         onMobileClose={() => setSidebarOpen(false)}
       />
-      <main className="flex flex-1 flex-col min-w-0 max-h-full">
-        {/* Fixed header */}
-        <header className="flex items-center gap-2 border-b border-border bg-card/95 backdrop-blur-sm px-3 py-2 shrink-0">
+
+      <div className="flex flex-1 flex-col min-w-0">
+        {/* === HEADER (always visible) === */}
+        <header className="flex items-center gap-2 border-b border-border bg-[#171717] px-3 py-2 shrink-0">
           <button onClick={() => setSidebarOpen(true)} className="md:hidden text-muted-foreground hover:text-foreground p-1 -ml-1" aria-label="Open sidebar">
             <PanelLeft className="h-5 w-5" />
           </button>
@@ -227,18 +228,18 @@ function AlicePage() {
           />
         </header>
 
-        {/* Body: chat + optional right panel */}
+        {/* === BODY: chat + right panel === */}
         <div className="flex flex-1 min-h-0">
-          {/* Chat area */}
-          <div className="flex flex-1 flex-col min-w-0 max-w-full">
-            <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
-              <div className="mx-auto max-w-3xl px-3 md:px-4 py-4 md:py-6 space-y-4 md:space-y-5">
+          {/* Chat scroll area */}
+      <div className="flex flex-1 flex-col min-w-0 pb-[56px] md:pb-0">
+            <div ref={scrollRef} className="flex-1 overflow-y-auto">
+              <div className="mx-auto max-w-3xl px-4 py-6 space-y-5">
                 {!active || active.messages.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center min-h-[calc(100dvh-12rem)] text-center px-4 space-y-3">
-                    <div className="text-4xl md:text-5xl">🐇</div>
-                    <h1 className="text-xl md:text-2xl font-semibold">Hello, I'm Alice.</h1>
-                    <p className="text-muted-foreground max-w-md text-xs md:text-sm">
-                      I learn about you over time, remember our past conversations, build my own skills, and use tools to actually get things done. Ask me anything.
+                  <div className="flex flex-col items-center justify-center text-center px-4 space-y-3" style={{ minHeight: "calc(100dvh - 180px)" }}>
+                    <div className="text-5xl">🐇</div>
+                    <h1 className="text-2xl font-semibold">Hello, I'm Alice.</h1>
+                    <p className="text-muted-foreground max-w-md text-sm">
+                      I learn about you over time, remember our conversations, build my own skills, and use tools to get things done.
                     </p>
                     {!ready && (
                       <p className="text-xs text-destructive">
@@ -258,7 +259,7 @@ function AlicePage() {
 
           {/* Desktop right panel */}
           {(panel === "memory" || panel === "skills" || panel === "tasks") && (
-            <aside className="hidden md:block w-72 md:w-80 shrink-0 border-l border-border bg-card/20 overflow-y-auto">
+            <aside className="hidden md:block w-80 shrink-0 border-l border-border bg-[#171717] overflow-y-auto">
               {panel === "memory" && (
                 <MemoryPanel entries={memory} onDelete={(id) => { const n = memory.filter(m => m.id !== id); setMemory(n); saveMemory(n); }} onClear={() => { setMemory([]); saveMemory([]); }} />
               )}
@@ -272,15 +273,17 @@ function AlicePage() {
           )}
         </div>
 
-        {/* Fixed composer */}
-        <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
+        {/* === COMPOSER (always visible at bottom) === */}
+        <div className="shrink-0">
+          <Composer onSend={sendMessage} onAbort={onAbort} busy={busy} disabled={!ready} />
+        </div>
 
-        {/* Mobile bottom sheet for memory/skills/tasks */}
+        {/* === MOBILE BOTTOM SHEET === */}
         {mobilePanelOpen && (
           <div className="fixed inset-0 z-40 md:hidden flex flex-col justify-end">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setMobilePanelOpen(null)} />
-            <div className="relative max-h-[70vh] rounded-t-2xl bg-card border border-border overflow-y-auto shadow-2xl animate-in slide-in-from-bottom">
-              <div className="sticky top-0 bg-card/80 backdrop-blur-sm border-b border-border px-4 py-3 flex items-center justify-between">
+            <div className="absolute inset-0 bg-black/60" onClick={() => setMobilePanelOpen(null)} />
+            <div className="relative max-h-[70vh] rounded-t-2xl bg-card border border-border overflow-y-auto shadow-2xl">
+              <div className="sticky top-0 bg-card border-b border-border px-4 py-3 flex items-center justify-between">
                 <h2 className="text-sm font-semibold capitalize">{mobilePanelOpen}</h2>
                 <button onClick={() => setMobilePanelOpen(null)} className="text-muted-foreground hover:text-foreground p-1">
                   <X className="h-5 w-5" />
@@ -300,10 +303,10 @@ function AlicePage() {
             </div>
           </div>
         )}
-      </main>
+      </div>
 
-      {/* Mobile bottom navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-border bg-card/95 backdrop-blur-md pb-safe">
+      {/* === MOBILE BOTTOM NAV === */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-border bg-[#171717]" style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
         <div className="flex items-center justify-around py-1.5">
           <MobileNavBtn icon={<MessageSquare className="h-5 w-5" />} label="Chats" active={panel === "chats" && !mobilePanelOpen} onClick={() => { setPanel("chats"); setMobilePanelOpen(null); }} />
           <MobileNavBtn icon={<Brain className="h-5 w-5" />} label="Memory" active={mobilePanelOpen === "memory"} onClick={() => { setPanel("memory"); setMobilePanelOpen("memory"); }} />

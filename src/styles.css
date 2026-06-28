@@ -44,37 +44,37 @@
 
 :root {
   --radius: 0.75rem;
-  /* Alice: warm, cozy late-night terminal. Deep aubergine bg, peach accent, soft rose user bubbles. */
-  --background: oklch(0.18 0.025 320);
-  --foreground: oklch(0.96 0.012 80);
-  --card: oklch(0.22 0.028 320);
-  --card-foreground: oklch(0.96 0.012 80);
-  --popover: oklch(0.22 0.028 320);
-  --popover-foreground: oklch(0.96 0.012 80);
-  --primary: oklch(0.82 0.13 50);            /* peach */
-  --primary-foreground: oklch(0.22 0.04 320);
-  --secondary: oklch(0.28 0.04 320);
-  --secondary-foreground: oklch(0.96 0.012 80);
-  --muted: oklch(0.25 0.03 320);
-  --muted-foreground: oklch(0.72 0.02 80);
-  --accent: oklch(0.72 0.15 350);            /* rose */
-  --accent-foreground: oklch(0.18 0.025 320);
-  --destructive: oklch(0.65 0.22 25);
-  --destructive-foreground: oklch(0.98 0.005 80);
-  --border: oklch(0.32 0.03 320);
-  --input: oklch(0.28 0.03 320);
-  --ring: oklch(0.82 0.13 50);
-  --sidebar: oklch(0.15 0.025 320);
-  --sidebar-foreground: oklch(0.92 0.012 80);
-  --sidebar-primary: oklch(0.82 0.13 50);
-  --sidebar-primary-foreground: oklch(0.18 0.025 320);
-  --sidebar-accent: oklch(0.24 0.03 320);
-  --sidebar-accent-foreground: oklch(0.96 0.012 80);
-  --sidebar-border: oklch(0.28 0.03 320);
-  --sidebar-ring: oklch(0.82 0.13 50);
-  --alice: oklch(0.82 0.13 50);
-  --tool: oklch(0.78 0.12 180);              /* teal for tool calls */
-  --thinking: oklch(0.7 0.08 280);           /* lavender for reasoning */
+  /* ChatGPT-inspired professional dark theme */
+  --background: #212121;
+  --foreground: #ECECEC;
+  --card: #2F2F2F;
+  --card-foreground: #ECECEC;
+  --popover: #2F2F2F;
+  --popover-foreground: #ECECEC;
+  --primary: #10a37f;
+  --primary-foreground: #FFFFFF;
+  --secondary: #2F2F2F;
+  --secondary-foreground: #ECECEC;
+  --muted: #2F2F2F;
+  --muted-foreground: #8E8EA0;
+  --accent: #343541;
+  --accent-foreground: #ECECEC;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #424242;
+  --input: #3E3E3E;
+  --ring: #10a37f;
+  --sidebar: #171717;
+  --sidebar-foreground: #ECECEC;
+  --sidebar-primary: #10a37f;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #2F2F2F;
+  --sidebar-accent-foreground: #ECECEC;
+  --sidebar-border: #2F2F2F;
+  --sidebar-ring: #10a37f;
+  --alice: #10a37f;
+  --tool: #58A6FF;
+  --thinking: #BB9AF7;
 }
 
 .dark {
