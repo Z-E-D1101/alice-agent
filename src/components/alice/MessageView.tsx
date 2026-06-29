@@ -1,6 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import rehypeShiki from "@shikijs/rehype";
+import rehypeHighlight from "rehype-highlight";
 import { useState, useCallback, type ReactNode } from "react";
 import type { Message } from "@/lib/alice/types";
 import { ThinkingPanel } from "./ThinkingPanel";
@@ -76,7 +76,7 @@ export function MessageView({ msg, live }: { msg: Message; live?: boolean }) {
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[[rehypeShiki, { theme: "github-dark" }]]}
+            rehypePlugins={[rehypeHighlight]}
             components={{
               code({ className, children, ...props }: any) {
                 const match = /language-(\w+)/.exec(className || "");
