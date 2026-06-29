@@ -29,7 +29,11 @@ export function MessageView({ msg, live }: { msg: Message; live?: boolean }) {
           {msg.toolCalls.map((tc) => <ToolCallLine key={tc.id} tc={tc} />)}
         </div>
       )}
-      {msg.content && <MarkdownRenderer content={msg.content} />}
+      {msg.content && (
+        <div className={live ? "alice-streaming" : ""}>
+          <MarkdownRenderer content={msg.content} live={live} />
+        </div>
+      )}
     </div>
   );
 }

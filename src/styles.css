@@ -178,6 +178,36 @@
 .hljs-addition { color: #aff5b4; background: #033a16; }
 .hljs-deletion { color: #ffdcd7; background: #67060c; }
 
+/* ===== Markdown element styles ===== */
+.alice-md-h1 { font-size: 1.4em; font-weight: 700; margin: 1.2em 0 0.5em; color: #ECECEC; border-bottom: 1px solid #2a2a2a; padding-bottom: 0.3em; }
+.alice-md-h2 { font-size: 1.2em; font-weight: 600; margin: 1.1em 0 0.4em; color: #ECECEC; }
+.alice-md-h3 { font-size: 1.1em; font-weight: 600; margin: 1em 0 0.3em; color: #ECECEC; }
+.alice-md-h4 { font-size: 1em; font-weight: 600; margin: 0.8em 0 0.3em; color: #ECECEC; }
+.alice-md-p { margin: 0.6em 0; }
+.alice-md-a { color: #58A6FF; text-decoration: none; transition: color 0.15s; }
+.alice-md-a:hover { color: #79C0FF; text-decoration: underline; }
+.alice-md-ul { margin: 0.5em 0; padding-left: 1.5em; list-style-type: disc; }
+.alice-md-ol { margin: 0.5em 0; padding-left: 1.5em; list-style-type: decimal; }
+.alice-md-li { margin: 0.2em 0; }
+.alice-md-li > p { margin: 0; }
+.alice-md-blockquote { margin: 0.6em 0; padding: 0.4em 1em; border-left: 3px solid #58A6FF; color: #8E8EA0; background: #1A1A1A; border-radius: 0 4px 4px 0; }
+.alice-md-blockquote p { margin: 0.2em 0; }
+.alice-md-hr { border: none; border-top: 1px solid #2a2a2a; margin: 1.2em 0; }
+.alice-md-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.alice-md-th { border: 1px solid #2a2a2a; padding: 8px 12px; text-align: left; font-weight: 600; background: #1A1A1A; white-space: nowrap; }
+.alice-md-td { border: 1px solid #2a2a2a; padding: 8px 12px; text-align: left; }
+.alice-md-tr:nth-child(even) { background: #1A1A1A; }
+.alice-md-input[type="checkbox"] { accent-color: #10a37f; margin-right: 6px; transform: scale(1.1); }
+
+/* Smooth streaming — new tokens fade in */
+@keyframes alice-stream-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.alice-streaming {
+  animation: alice-stream-in 0.15s ease-out;
+}
+
 /* ===== Inline code ===== */
 .alice-inline-code {
   background: #2F2F2F;
