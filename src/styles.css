@@ -94,11 +94,40 @@
 
 /* ===== Code blocks (OpenAI-style) ===== */
 .alice-code-block {
-  position: relative;
   margin: 10px 0;
   border-radius: 8px;
   background: #111111;
-  border: 1px solid #3a3a3a;
+  border: 1px solid #2a2a2a;
+  overflow: hidden;
+}
+.alice-code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+  user-select: none;
+}
+.alice-code-block-header .lang-label {
+  font-size: 11px;
+  color: #6b6b6b;
+  text-transform: lowercase;
+}
+.alice-code-block-header .copy-btn {
+  padding: 3px 10px;
+  font-size: 11px;
+  color: #8E8EA0;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.alice-code-block-header .copy-btn:hover {
+  background: #2F2F2F;
+  color: #ECECEC;
+  border-color: #3a3a3a;
 }
 .alice-code-block pre {
   overflow-x: auto;
@@ -121,35 +150,15 @@
 .alice-code-block code {
   max-width: none !important;
 }
-.alice-code-block .copy-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px 10px;
-  font-size: 11px;
-  color: #8E8EA0;
-  background: #2F2F2F;
-  border: 1px solid #3a3a3a;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.15s;
-  z-index: 2;
-  user-select: none;
+.alice-code-block pre::-webkit-scrollbar {
+  height: 5px;
 }
-.alice-code-block .copy-btn:hover {
-  background: #3a3a3a;
-  color: #ECECEC;
+.alice-code-block pre::-webkit-scrollbar-track {
+  background: transparent;
 }
-.alice-code-block .lang-label {
-  position: absolute;
-  top: 6px;
-  right: 52px;
-  left: auto;
-  font-size: 10px;
-  color: #5C5C5C;
-  user-select: none;
-  pointer-events: none;
-  z-index: 2;
+.alice-code-block pre::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
 }
 
 /* ===== Syntax highlighting (highlight.js github-dark) ===== */
