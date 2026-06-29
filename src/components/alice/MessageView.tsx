@@ -1,47 +1,7 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
-import { useState, useCallback, useRef, useEffect, type ReactNode } from "react";
 import type { Message } from "@/lib/alice/types";
 import { ThinkingPanel } from "./ThinkingPanel";
 import { ToolCallLine } from "./ToolCallLine";
-
-function extractText(node: ReactNode): string {
-  if (typeof node === "string" || typeof node === "number") return String(node);
-  if (Array.isArray(node)) return node.map(extractText).join("");
-  if (node && typeof node === "object" && "props" in node) {
-    return extractText((node as any).props.children);
-  }
-  return "";
-}
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  const copy = useCallback(async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    }
-  }, [text]);
-  return (
-    <button type="button" className="copy-btn" onClick={copy}>
-      {copied ? "Copied!" : "Copy"}
-    </button>
-  );
-}
+import { MarkdownRenderer } from "./MarkdownRenderer";
 
 export function MessageView({ msg, live }: { msg: Message; live?: boolean }) {
   if (msg.role === "tool") return null;
@@ -69,59 +29,7 @@ export function MessageView({ msg, live }: { msg: Message; live?: boolean }) {
           {msg.toolCalls.map((tc) => <ToolCallLine key={tc.id} tc={tc} />)}
         </div>
       )}
-      {msg.content && (
-        <div
-          className="prose prose-sm max-w-none text-[15px] leading-relaxed"
-          style={{ color: "#ECECEC" }}
-        >
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeHighlight]}
-            components={{
-              code({ className, children, ...props }: any) {
-                const match = /language-(\w+)/.exec(className || "");
-                const codeStr = extractText(children);
-                const preRef = useRef<HTMLPreElement>(null);
-                useEffect(() => {
-                  const pre = preRef.current;
-                  if (!pre) return;
-                  let scrollLeft = 0;
-                  const save = () => { scrollLeft = pre.scrollLeft; };
-                  pre.addEventListener("scroll", save, { passive: true });
-                  return () => {
-                    pre.removeEventListener("scroll", save);
-                    if (pre) pre.scrollLeft = scrollLeft;
-                  };
-                }, []);
-                if (match) {
-                  return (
-                    <div className="alice-code-block">
-                      <div className="alice-code-block-header">
-                        <span className="lang-label">{match[1]}</span>
-                        <CopyButton text={codeStr} />
-                      </div>
-                      <pre ref={preRef}>
-                        <code className={className}>{children}</code>
-                      </pre>
-                    </div>
-                  );
-                }
-                return <code className="alice-inline-code" {...props}>{children}</code>;
-              },
-              pre({ children }: any) { return <>{children}</>; },
-              table({ children }: any) {
-                return (
-                  <div className="alice-table-wrapper">
-                    <table>{children}</table>
-                  </div>
-                );
-              },
-            }}
-          >
-            {msg.content}
-          </ReactMarkdown>
-        </div>
-      )}
+      {msg.content && <MarkdownRenderer content={msg.content} />}
     </div>
   );
 }
